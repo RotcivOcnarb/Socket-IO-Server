@@ -27,12 +27,16 @@ io.on('connection', function(socket){
   
 });
 
+function replaceAll(string, from, to){
+	return string.split(from).join(to);
+}
+
 var callbacks = {
 	"/myID": function(request, id){
 		sendBackData(id, "/myID", [id]);
 	},
 	"/rooms" : function(request, id){
-		sendBackData(id, "/rooms", rooms.map(function(e) { return JSON.stringify(e);}));
+		sendBackData(id, "/rooms", rooms.map(function(e) { return replaceAll(JSON.stringify(e), "\"", "|");}));
 	},
 	"/createRoom": function(request, id){
 		var roomName = request.parameters[0];
@@ -50,7 +54,7 @@ var callbacks = {
 			"player_data": {}
 		};
 		rooms.push(roomData);
-		
+				
 		sendBackData(id, "/createRoom", [JSON.stringify(roomData)]);
 		
 	},
