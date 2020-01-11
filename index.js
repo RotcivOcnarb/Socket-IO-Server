@@ -24,6 +24,18 @@ io.on('connection', function(socket){
 			console.log("message path "+obj.path+" not found");
 		}
 	});
+	
+	socket.on('disconnect', function () {
+		io.emit('user ' + id + 'disconnected');
+		
+		for(k in Object.keys(rooms)){
+			var room = rooms[Object.keys(rooms)[k]];
+			if(room.player_data[id]){
+				delete room.player_data[id];
+			}
+		}
+		clearRooms();
+	});
   
 });
 
