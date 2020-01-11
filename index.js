@@ -27,8 +27,8 @@ io.on('connection', function(socket){
   
 });
 
-function replaceAll(string, from, to){
-	return string.split(from).join(to);
+function replaceAll(str, from, to){
+	return str.split(from).join(to);
 }
 
 var callbacks = {
@@ -38,8 +38,8 @@ var callbacks = {
 	"/rooms" : function(request, id){
 		
 		var parameters = [];
-		
-		for(key in Object.keys(rooms)){
+		for(k in Object.keys(rooms)){
+			var key = Object.keys(rooms)[k];
 			parameters.push(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
 			console.log(key + ": " + JSON.stringify(rooms[key]));
 			console.log(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
