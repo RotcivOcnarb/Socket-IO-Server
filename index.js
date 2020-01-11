@@ -37,9 +37,9 @@ var callbacks = {
 	"/createRoom": function(request, id){
 		var roomName = request.parameters[0];
 		var password = request.parameters[1];
-		var roomID = generateId5();
+		var roomID = generateID5();
 		while(getRoom(roomID)){
-			roomID = generateId5();
+			roomID = generateID5();
 		}
 		
 		var roomData = {
