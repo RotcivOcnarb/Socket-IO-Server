@@ -55,7 +55,7 @@ var callbacks = {
 		};
 		rooms.push(roomData);
 				
-		sendBackData(id, "/createRoom", [JSON.stringify(roomData)]);
+		sendBackData(id, "/createRoom", [replaceAll(JSON.stringify(roomData), "\"", "|")]);
 		
 	},
 	"/enterRoom": function(request, id){
