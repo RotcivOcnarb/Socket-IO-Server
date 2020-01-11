@@ -36,7 +36,7 @@ var callbacks = {
 		sendBackData(id, "/myID", [id]);
 	},
 	"/rooms" : function(request, id){
-		
+		clearRooms();
 		var parameters = [];
 		for(k in Object.keys(rooms)){
 			var key = Object.keys(rooms)[k];
@@ -216,6 +216,17 @@ function sendBackData(id, path, parameters){
 	};
 	allConnections[id].emit('msg', JSON.stringify(obj));
 	console.log("Message emmited to ID " + id);
+}
+
+function clearRooms(){
+	for(var k in Object.keys(rooms)){
+		var key = Object.keys(rooms)[k];
+		var room = rooms[key];
+		
+		room.players = Object.keys(room.player_data).length;
+		if(room.players == 0)
+			delete rooms[key];
+	}
 }
 
 function getOponentID(room, id){
