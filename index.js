@@ -41,7 +41,7 @@ var callbacks = {
 		
 		for(key in Object.keys(rooms)){
 			parameters.push(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
-			console.log(key + ": " + JSON.stringify(rooms[key]);
+			console.log(key + ": " + JSON.stringify(rooms[key]));
 			console.log(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
 		}
 		
