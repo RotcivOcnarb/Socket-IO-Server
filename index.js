@@ -6,7 +6,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var allConnections = {};
-var rooms = [];
+var rooms = {};
 
 // sempre que o socketio receber uma conexão vai devoltar realizar o broadcast dela
 io.on('connection', function(socket){	
@@ -36,13 +36,22 @@ var callbacks = {
 		sendBackData(id, "/myID", [id]);
 	},
 	"/rooms" : function(request, id){
-		sendBackData(id, "/rooms", rooms.map(function(e) { return replaceAll(JSON.stringify(e), "\"", "|");}));
+		
+		var parameters = [];
+		
+		for(key in Object.keys(rooms)){
+			parameters.push(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
+			console.log(key + ": " + JSON.stringify(rooms[key]);
+			console.log(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
+		}
+		
+		sendBackData(id, "/rooms", parameters);
 	},
 	"/createRoom": function(request, id){
 		var roomName = request.parameters[0];
 		var password = request.parameters[1];
 		var roomID = generateID5();
-		while(getRoom(roomID)){
+		while(rooms[roomID]){
 			roomID = generateID5();
 		}
 		
@@ -53,14 +62,14 @@ var callbacks = {
 			"players": 0,
 			"player_data": {}
 		};
-		rooms.push(roomData);
+		rooms[roomID] = roomData;
 				
 		sendBackData(id, "/createRoom", [replaceAll(JSON.stringify(roomData), "\"", "|")]);
 		
 	},
 	"/enterRoom": function(request, id){
 		var roomID = request.parameters[0];		
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		if(room.players < 2 && !room.player_data[id]){
 			room.player_data[id] = {
@@ -80,7 +89,7 @@ var callbacks = {
 	},
 	"/exitRoom": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		if(!room) return;
 		
@@ -94,12 +103,12 @@ var callbacks = {
 					sendBackData(oponentID, "/exitRoom", [id]);
 			
 			if(room.players == 0)
-				removeRoom(roomID);
+				delete rooms[roomID];
 		}
 	},
 	"/finishHeroSelection": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		if(room.player_data[id]){
 			room.player_data[id].heroes = [
@@ -118,7 +127,7 @@ var callbacks = {
 	},
 	"/requestOponentHeroes": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		var player0 = Object.keys(room.player_data)[0];
 		var player1 = Object.keys(room.player_data)[1]; //se eu to sozinho, isso dá undefined;
@@ -144,7 +153,7 @@ var callbacks = {
 	},
 	"/checkReady": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		room.player_data[id].ready = true;
 		
@@ -156,7 +165,7 @@ var callbacks = {
 	},
 	"/uncheckReady": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		room.player_data[id].ready = false;
 		
@@ -168,7 +177,7 @@ var callbacks = {
 	},
 	"/gameStart": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		
 		//gera um dos dois players aleatóriamente, e esse q vai ser o primeiro turno
 		var firstTurnPlayer = Object.keys(room.player_data)[parseInt(Math.random() * 2)];
@@ -179,21 +188,21 @@ var callbacks = {
 	},
 	"/turnPass": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		var oponentID = getOponentID(room, id);
 		sendBackData(oponentID, "/oponentTurnPass", []);
 		sendBackData(id, "/turnPass", []);
 	},
 	"/heroesPositions": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		var oponentID = getOponentID(room, id);
 		request.parameters.shift();
 		sendBackData(oponentID, "/heroesPositions", request.parameters);
 	},
 	"/heroMove": function(request, id){
 		var roomID = request.parameters[0];
-		var room = getRoom(roomID);
+		var room = rooms[roomID];
 		var oponentID = getOponentID(room, id);
 		request.parameters.shift();
 		sendBackData(oponentID, "/oponentMoveHero", request.parameters);
@@ -218,22 +227,7 @@ function getOponentID(room, id){
 	if(player1 == id) return player0;
 	return null;
 }
-
-function getRoom(id){
-	for(var i = 0; i < rooms.length; i ++){
-		if(rooms[i].id == id){
-			return rooms[i];
-		}
-	}
-}
-
-function removeRoom(id){
-	for(var i = 0; i < rooms.length; i ++){
-		if(rooms[i].id == id){
-			delete rooms[i];
-		}
-	}
-}
+)_ Cews2zavkrV8S
 
 function generateID5(){
 	var letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -248,3 +242,4 @@ function generateID5(){
 http.listen(1337, function(){
 	console.log('Servidor rodando em: http://localhost:1337');
 });
+
