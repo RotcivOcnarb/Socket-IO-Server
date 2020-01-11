@@ -28,7 +28,7 @@ io.on('connection', function(socket){
 });
 
 var callbacks = {
-	"/myIP": function(request, id){
+	"/myID": function(request, id){
 		sendBackData(id, "/myID", [id]);
 	},
 	"/rooms" : function(request, id){
