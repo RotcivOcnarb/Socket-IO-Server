@@ -227,7 +227,6 @@ function getOponentID(room, id){
 	if(player1 == id) return player0;
 	return null;
 }
-)_ Cews2zavkrV8S
 
 function generateID5(){
 	var letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
