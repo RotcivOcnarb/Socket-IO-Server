@@ -140,6 +140,7 @@ var callbacks = {
 			//Devolve os heróis q o oponente escolheu;
 			console.log("player requested oponent heroes, they are: ");
 			console.log(room.player_data[oponentID].heroes);
+		
 			sendBackData(id, "/oponentSelectedHeroes", room.player_data[oponentID].heroes);
 			
 			if(room.player_data[oponentID].ready)
@@ -201,6 +202,7 @@ var callbacks = {
 		var oponentID = getOponentID(room, id);
 		request.parameters.shift();
 		sendBackData(oponentID, "/heroesPositions", request.parameters);
+		console.log("Sending heroes positions to oponent: " + reques.parameters);
 	},
 	"/heroMove": function(request, id){
 		var roomID = request.parameters[0];
