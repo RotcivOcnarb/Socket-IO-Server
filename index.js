@@ -15,8 +15,7 @@ io.on('connection', function(socket){
 
 	console.log("Connection made from ID " + id);
 
-	socket.on('msg', function(msg){
-		var obj = JSON.parse(msg);
+	socket.on('msg', function(obj){
 		console.log("Message " + obj.path + " received from ID " + id);
 		if(callbacks[obj.path]){
 			callbacks[obj.path](obj, id);
