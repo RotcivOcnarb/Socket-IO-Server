@@ -214,7 +214,7 @@ var callbacks = {
 		var oponentID = getOponentID(room, id);
 		request.parameters.shift();
 		sendBackData(oponentID, "/heroesPositions", request.parameters);
-		console.log("Sending heroes positions to oponent: " + reques.parameters);
+		console.log("Sending heroes positions to oponent: " + request.parameters);
 	},
 	"/heroMove": function(request, id){
 		var roomID = request.parameters[0];
