@@ -30,12 +30,12 @@ io.on('connection', function(socket){
 		for(k in Object.keys(rooms)){
 			var room = rooms[Object.keys(rooms)[k]];
 			if(room.player_data[id]){
-				delete room.player_data[id];
-				
 				var oponentID = getOponentID(room, id);
 				if(oponentID)
 					if(room.player_data[oponentID])
 						sendBackData(oponentID, "/exitRoom", [id]);
+					
+				delete room.player_data[id];
 			}
 		}
 		clearRooms();
