@@ -13,10 +13,7 @@ io.on('connection', function(socket){
 	var id = generateID5(); //Cria um ID pra pessoa q entrou e coloca o socket dela na lista
 	allConnections[id] = socket;
 
-	console.log("Connection made from ID " + id);
-
 	socket.on('msg', function(obj){
-		console.log("Message " + obj.path + " received from ID " + id);
 		if(callbacks[obj.path]){
 			callbacks[obj.path](obj, id);
 		}
@@ -26,7 +23,6 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('disconnect', function () {	
-		console.log("Player " + id + " disconnected");	
 		for(k in Object.keys(rooms)){
 			var room = rooms[Object.keys(rooms)[k]];
 			if(room.player_data[id]){
@@ -244,7 +240,6 @@ function sendBackData(id, path, parameters){
 		"parameters": parameters
 	};
 	allConnections[id].emit('msg', JSON.stringify(obj));
-	console.log("Message emmited to ID " + id);
 }
 
 function clearRooms(){
