@@ -53,8 +53,6 @@ var callbacks = {
 		for(k in Object.keys(rooms)){
 			var key = Object.keys(rooms)[k];
 			parameters.push(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
-			console.log(key + ": " + JSON.stringify(rooms[key]));
-			console.log(replaceAll(JSON.stringify(rooms[key]), "\"", "|"));
 		}
 		
 		sendBackData(id, "/rooms", parameters);
@@ -149,10 +147,7 @@ var callbacks = {
 		}
 		var oponentID = getOponentID(room, id);
 		if(room.player_data[oponentID].heroes.length == 5){
-			//Devolve os heróis q o oponente escolheu;
-			console.log("player requested oponent heroes, they are: ");
-			console.log(room.player_data[oponentID].heroes);
-		
+			//Devolve os heróis q o oponente escolheu;		
 			sendBackData(id, "/oponentSelectedHeroes", room.player_data[oponentID].heroes);
 			
 			if(room.player_data[oponentID].ready)
