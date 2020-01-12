@@ -217,7 +217,7 @@ var callbacks = {
 		var oponentID = getOponentID(room, id);
 		request.parameters.shift();
 		sendBackData(oponentID, "/oponentMoveHero", request.parameters);
-	}
+	},
 	"/heroKilled": function(request, id){
 		forwardToOponent(request, id);
 	},
