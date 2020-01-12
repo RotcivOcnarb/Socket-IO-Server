@@ -216,6 +216,9 @@ var callbacks = {
 	"/heroKilled": function(request, id){
 		forwardToOponent(request, id);
 	},
+	"/heroKilledFailed": function(request, id){
+		forwardToOponent(request, id);
+	},
 	"/flagPass": function(request, id){
 		forwardToOponent(request, id);
 	}
