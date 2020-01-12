@@ -31,9 +31,15 @@ io.on('connection', function(socket){
 			var room = rooms[Object.keys(rooms)[k]];
 			if(room.player_data[id]){
 				delete room.player_data[id];
+				
+				var oponentID = getOponentID(room, id);
+				if(oponentID)
+					if(room.player_data[oponentID])
+						sendBackData(oponentID, "/exitRoom", [id]);
 			}
 		}
 		clearRooms();
+		delete allConnections[id];
 	});
   
 });
@@ -47,7 +53,6 @@ var callbacks = {
 		sendBackData(id, "/myID", [id]);
 	},
 	"/rooms" : function(request, id){
-		clearRooms();
 		var parameters = [];
 		for(k in Object.keys(rooms)){
 			var key = Object.keys(rooms)[k];
