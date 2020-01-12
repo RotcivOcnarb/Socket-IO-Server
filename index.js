@@ -209,12 +209,7 @@ var callbacks = {
 		sendBackData(id, "/turnPass", []);
 	},
 	"/heroesPositions": function(request, id){
-		var roomID = request.parameters[0];
-		var room = rooms[roomID];
-		var oponentID = getOponentID(room, id);
-		request.parameters.shift();
-		sendBackData(oponentID, "/heroesPositions", request.parameters);
-		console.log("Sending heroes positions to oponent: " + request.parameters);
+		forwardToOponent(request, id);
 	},
 	"/heroMove": function(request, id){
 		var roomID = request.parameters[0];
@@ -223,7 +218,21 @@ var callbacks = {
 		request.parameters.shift();
 		sendBackData(oponentID, "/oponentMoveHero", request.parameters);
 	}
+	"/heroKilled": function(request, id){
+		forwardToOponent(request, id);
+	},
+	"/flagPass": function(){
+		forwardToOponent(request, id);
+	}
 };
+
+function forwardToOponent(request, id){
+	var roomID = request.parameters[0];
+	var room = rooms[roomID];
+	var oponentID = getOponentID(room, id);
+	request.parameters.shift();
+	sendBackData(oponentID, request.path, request.parameters);
+}
 
 function sendBackData(id, path, parameters){
 	var obj = {
