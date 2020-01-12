@@ -104,14 +104,13 @@ var callbacks = {
 		if(!room) return;
 		
 		if(room.player_data[id]){
-			delete room.player_data[id];
 			room.players = Object.keys(room.player_data).length;
-			
 			var oponentID = getOponentID(room, id);
 			if(oponentID)
 				if(room.player_data[oponentID])
 					sendBackData(oponentID, "/exitRoom", [id]);
 			
+			delete room.player_data[id];
 			if(room.players == 0)
 				delete rooms[roomID];
 		}
