@@ -25,9 +25,7 @@ io.on('connection', function(socket){
 		}
 	});
 	
-	socket.on('disconnect', function () {
-		io.emit('user ' + id + 'disconnected');
-		
+	socket.on('disconnect', function () {		
 		for(k in Object.keys(rooms)){
 			var room = rooms[Object.keys(rooms)[k]];
 			if(room.player_data[id]){
