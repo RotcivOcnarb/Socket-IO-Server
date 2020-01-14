@@ -231,8 +231,10 @@ function forwardToOponent(request, id){
 	var roomID = request.parameters[0];
 	var room = rooms[roomID];
 	var oponentID = getOponentID(room, id);
-	request.parameters.shift();
-	sendBackData(oponentID, request.path, request.parameters);
+	if(oponentID){
+		request.parameters.shift();
+		sendBackData(oponentID, request.path, request.parameters);
+	}
 }
 
 function sendBackData(id, path, parameters){
