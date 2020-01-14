@@ -221,6 +221,9 @@ var callbacks = {
 	},
 	"/flagPass": function(request, id){
 		forwardToOponent(request, id);
+	},
+	"/activatedEffect": function(request, id){
+		forwardToOponent(request, id);
 	}
 };
 
