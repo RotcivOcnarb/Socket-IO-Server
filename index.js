@@ -250,9 +250,11 @@ function clearRooms(){
 		var key = Object.keys(rooms)[k];
 		var room = rooms[key];
 		
-		room.players = Object.keys(room.player_data).length;
-		if(room.players == 0)
-			delete rooms[key];
+		if(room){		
+			room.players = Object.keys(room.player_data).length;
+			if(room.players == 0)
+				delete rooms[key];
+		}
 	}
 }
 
